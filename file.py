@@ -11,7 +11,7 @@ with open ('data.csv') as f:
     for line in f:
         data.append(line)
 
-print(data)
+#print(data)
 data2= pd.read_csv ('data.csv')       
 print(data2)
 
