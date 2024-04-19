@@ -36,15 +36,69 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.linear_model import LogisticRegression
 
+
+# modelo Gaussian
 model = GaussianNB(priors=None, var_smoothing=1e-9)
 model.fit(X_train, y_train)
 
-#Fazer a predição
-
 y_pred = model.predict(X_test)
 score = accuracy_score(y_test, y_pred)
-print(f'Accuracy: {score: .2f}' )
+print(f'\nAccuracy GaussianNB: {score: .2f}\n')
 
-df = pd.DataFrame({'Atual': y_test, 'Previsto': y_pred})
+df = pd.DataFrame({'Atual': y_test, 'Previsto': y_pred})  # dataframe para visualizar as predições
 
 print(df)
+
+
+# modelo KNeighborsClassifier 
+model_knn = KNeighborsClassifier(n_neighbors=5)
+model_knn.fit(X_train, y_train)
+
+y_pred_knn = model_knn.predict(X_test)
+score_knn = accuracy_score(y_test, y_pred_knn)
+print(f'\nAccuracy KNeighborsClassifier: {score_knn:.2f}\n')
+
+df_knn = pd.DataFrame({'Atual': y_test, 'Previsto': y_pred_knn})  # dataframe para visualizar as predições
+
+print(df_knn)
+
+
+# modelo DecisionTreeClassifier 
+model_tree = DecisionTreeClassifier(max_depth=None, random_state=42)
+model_tree.fit(X_train, y_train)
+
+y_pred_tree = model_tree.predict(X_test)
+score_tree = accuracy_score(y_test, y_pred_tree)
+print(f'\n Accuracy DecisionTreeClassifier: {score_tree:.2f}\n')
+
+df_tree = pd.DataFrame({'Atual': y_test, 'Previsto': y_pred_tree})  # dataframe para visualizar as predições
+
+print(df_tree)
+
+
+# modelo LogisticRegression
+from sklearn.preprocessing import StandardScaler
+
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+
+# modelo LogisticRegression com os dados escalados
+model_lr = LogisticRegression(max_iter=1000)
+model_lr.fit(X_train_scaled, y_train)
+
+y_pred_lr = model_lr.predict(X_test_scaled)
+score_lr = accuracy_score(y_test, y_pred_lr)
+print(f'\nAccuracy LogisticRegression: {score_lr:.2f}\n')
+
+df_lr = pd.DataFrame({'Atual': y_test, 'Previsto': y_pred_lr})
+
+print(df_lr)
+
+
+#print("Formato de X_train:", X_train.shape)
+#print("Formato de X_test:", X_test.shape)
+#print("Formato de y_train:", y_train.shape)
+#print("Formato de y_test:", y_test.shape)
+#print("Número de linhas nos dados originais:", data2.shape[0])
+
